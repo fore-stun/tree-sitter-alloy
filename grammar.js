@@ -57,7 +57,7 @@ module.exports = grammar({
       ),
 
     // mult ::= lone | some | one
-    mult: ($) => choice("lone", "some", "one"),
+    mult: (_$) => choice("lone", "some", "one"),
 
     // fieldDecl ::= [var] decl
     fieldDecl: ($) => seq(optional("var"), $.decl),
@@ -181,7 +181,7 @@ module.exports = grammar({
 
     // binOp ::= || | or | && | and | <=> | iff | => | implies |
     //     & | + | - | ++ | <: | :> | . | until | releases | since | triggered | ;
-    binOp: ($) =>
+    binOp: (_$) =>
       choice(
         "||",
         "or",
@@ -214,7 +214,7 @@ module.exports = grammar({
       ),
 
     // compareOp ::= in | = | < | > | =< | >=
-    compareOp: ($) => choice("in", "=", "<", ">", "=<", ">="),
+    compareOp: (_$) => choice("in", "=", "<", ">", "=<", ">="),
 
     // letDecl ::= name = expr
     letDecl: ($) => seq($.name, "=", $.expr),
@@ -226,7 +226,7 @@ module.exports = grammar({
     blockOrBar: ($) => choice($.block, seq($.bar, $.expr)),
 
     // bar ::= |
-    bar: ($) => "|",
+    bar: (_$) => "|",
 
     // quant ::= all | no | sum | mult
     quant: ($) => choice("all", "no", "sum", $.mult),
