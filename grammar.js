@@ -1,3 +1,7 @@
+const commaSepBy1 = (i) => seq(i, repeat(seq(",", i)));
+
+const commaSepBy = (i) => optional(commaSepBy1(i));
+
 module.exports = grammar({
   name: "alloy",
 
@@ -7,17 +11,15 @@ module.exports = grammar({
       seq(optional($.moduleDecl), repeat($.import), repeat($.paragraph)),
 
     // moduleDecl ::= module qualName [[name,+]]
-    // TODO check commas
     moduleDecl: ($) =>
-      seq("module", $.qualName, optional(seq("[", repeat1($.name), "]"))),
+      seq("module", $.qualName, optional(seq("[", commaSepBy1($.name), "]"))),
 
     // import ::= open qualName [[qualName,+]] [as name]
-    // TODO check commas
     import: ($) =>
       seq(
         "open",
         $.qualName,
-        optional(seq("[", repeat1($.qualName), "]")),
+        optional(seq("[", commaSepBy1($.qualName), "]")),
         optional(seq("as", $.name)),
       ),
 
@@ -34,17 +36,16 @@ module.exports = grammar({
       ),
 
     // sigDecl ::= [var] [abstract] [mult] sig name,+ [sigExt] { fieldDecl,* } [block]
-    // TODO check commas
     sigDecl: ($) =>
       seq(
         optional("var"),
         optional("abstract"),
         optional($.mult),
         "sig",
-        repeat1($.name),
+        commaSepBy1($.name),
         optional($.sigExt),
         "{",
-        repeat($.fieldDecl),
+        commaSepBy($.fieldDecl),
         "}",
         optional($.block),
       ),
@@ -64,7 +65,7 @@ module.exports = grammar({
 
     // decl ::= [disj] name,+ : [disj] expr
     decl: ($) =>
-      seq(optional("disj"), repeat1($.name), ":", optional("disj"), $.expr),
+      seq(optional("disj"), commaSepBy1($.name), ":", optional("disj"), $.expr),
 
     // factDecl ::= fact [name] block
     factDecl: ($) => seq("fact", optional($.name), $.block),
@@ -94,9 +95,11 @@ module.exports = grammar({
       ),
 
     // paraDecls ::= ( decl,* ) | [ decl,* ]
-    // TODO check commas
     paraDecls: ($) =>
-      choice(seq("(", repeat($.decl), ")"), seq("[", repeat($.decl), "]")),
+      choice(
+        seq("(", commaSepBy($.decl), ")"),
+        seq("[", commaSepBy($.decl), "]"),
+      ),
 
     // assertDecl ::= assert [name] block
     assertDecl: ($) => seq("assert", optional($.name), $.block),
@@ -111,13 +114,12 @@ module.exports = grammar({
       ),
 
     // scope ::= for number [but typescope,+] | for typescope,+
-    // TODO check commas
     scope: ($) =>
       seq(
         "for",
         choice(
-          seq($.number, optional(seq("but", repeat1($.typescope)))),
-          repeat1($.typescope),
+          seq($.number, optional(seq("but", commaSepBy1($.typescope)))),
+          commaSepBy1($.typescope),
         ),
       ),
 
@@ -134,7 +136,6 @@ module.exports = grammar({
     //     | { decl,+ blockOrBar }
     //     | expr '
     //     | ( expr ) | block
-    // TODO check commas
     expr: ($) =>
       choice(
         $.const,
@@ -144,12 +145,12 @@ module.exports = grammar({
         seq($.unOp, $.expr),
         seq($.expr, $.binOp, $.expr),
         seq($.expr, $.arrowOp, $.expr),
-        seq($.expr, "[", repeat($.expr), "]"),
+        seq($.expr, "[", commaSepBy($.expr), "]"),
         seq($.expr, choice("!", "not"), $.compareOp, $.expr),
         seq($.expr, choice("=>", "implies"), $.expr, "else", $.expr),
-        seq("let", repeat1($.letDecl), $.blockOrBar),
-        seq($.quant, repeat1($.decl), $.blockOrBar),
-        seq("{", repeat1($.decl), $.blockOrBar, "}"),
+        seq("let", commaSepBy1($.letDecl), $.blockOrBar),
+        seq($.quant, commaSepBy1($.decl), $.blockOrBar),
+        seq("{", commaSepBy1($.decl), $.blockOrBar, "}"),
         seq($.expr, "'"),
         seq("(", $.expr, ")"),
         $.block,
