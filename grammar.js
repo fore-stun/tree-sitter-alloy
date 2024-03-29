@@ -64,7 +64,7 @@ module.exports = grammar({
 
     // decl ::= [disj] name,+ : [disj] expr
     decl: ($) =>
-      seq(optional($.disj), repeat1($.name), ":", optional($.disj), $.expr),
+      seq(optional("disj"), repeat1($.name), ":", optional("disj"), $.expr),
 
     // factDecl ::= fact [name] block
     factDecl: ($) => seq("fact", optional($.name), $.block),
@@ -113,7 +113,13 @@ module.exports = grammar({
     // scope ::= for number [but typescope,+] | for typescope,+
     // TODO check commas
     scope: ($) =>
-      seq("for", choice($.number, seq("but", repeat1($.typescope)))),
+      seq(
+        "for",
+        choice(
+          seq($.number, optional(seq("but", repeat1($.typescope)))),
+          repeat1($.typescope),
+        ),
+      ),
 
     // typescope ::= [exactly] number qualName
     typescope: ($) => seq(optional("exactly"), $.number, $.qualName),
@@ -150,7 +156,7 @@ module.exports = grammar({
       ),
 
     // const ::= [-] number | none | univ | iden
-    const: ($) => seq(optional("-"), choice($.number, "none", "univ", "iden")),
+    const: ($) => choice(seq(optional("-"), $.number), "none", "univ", "iden"),
 
     // unOp ::= ! | not | no | mult | set | # | ~ | * | ^
     //     | always | eventually | after | before | historically | once
@@ -226,8 +232,7 @@ module.exports = grammar({
     quant: ($) => choice("all", "no", "sum", $.mult),
 
     // qualName ::= [this/] ( name / )* name
-    qualName: ($) =>
-      seq(optional(seq("this/", repeat(seq($.name, "/")))), $.name),
+    qualName: ($) => seq(optional("this/"), repeat(seq($.name, "/")), $.name),
 
     name: (_$) => /[A-Za-z_"]+/,
 
