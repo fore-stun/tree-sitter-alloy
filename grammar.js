@@ -2,12 +2,17 @@ module.exports = grammar({
   name: "alloy",
 
   rules: {
+    // alloyModule ::= [moduleDecl] import* paragraph*
     alloyModule: ($) =>
       seq(optional($.moduleDecl), repeat($.import), repeat($.paragraph)),
 
+    // moduleDecl ::= module qualName [[name,+]]
+    // TODO check commas
     moduleDecl: ($) =>
       seq("module", $.qualName, optional(seq("[", repeat1($.name), "]"))),
 
+    // import ::= open qualName [[qualName,+]] [as name]
+    // TODO check commas
     import: ($) =>
       seq(
         "open",
@@ -16,6 +21,8 @@ module.exports = grammar({
         optional(seq("as", $.name)),
       ),
 
+    // paragraph ::= sigDecl | factDecl | predDecl | funDecl
+    //     | assertDecl | cmdDecl
     paragraph: ($) =>
       choice(
         $.sigDecl,
@@ -26,10 +33,8 @@ module.exports = grammar({
         $.cmdDecl,
       ),
 
-    // ... continue with the rest of your rules ...
-
-    // ... continued from previous rules ...
-
+    // sigDecl ::= [var] [abstract] [mult] sig name,+ [sigExt] { fieldDecl,* } [block]
+    // TODO check commas
     sigDecl: ($) =>
       seq(
         optional("var"),
@@ -44,21 +49,27 @@ module.exports = grammar({
         optional($.block),
       ),
 
+    // sigExt ::= extends qualName | in qualName [+ qualName]*
     sigExt: ($) =>
       choice(
         seq("extends", $.qualName),
         seq("in", $.qualName, repeat(seq("+", $.qualName))),
       ),
 
+    // mult ::= lone | some | one
     mult: ($) => choice("lone", "some", "one"),
 
+    // fieldDecl ::= [var] decl
     fieldDecl: ($) => seq(optional("var"), $.decl),
 
+    // decl ::= [disj] name,+ : [disj] expr
     decl: ($) =>
       seq(optional($.disj), repeat1($.name), ":", optional($.disj), $.expr),
 
+    // factDecl ::= fact [name] block
     factDecl: ($) => seq("fact", optional($.name), $.block),
 
+    // predDecl ::= pred [qualName .] name [paraDecls] block
     predDecl: ($) =>
       seq(
         "pred",
@@ -68,6 +79,7 @@ module.exports = grammar({
         $.block,
       ),
 
+    // funDecl ::= fun [qualName .] name [paraDecls] : expr { expr }
     funDecl: ($) =>
       seq(
         "fun",
@@ -81,11 +93,15 @@ module.exports = grammar({
         "}",
       ),
 
+    // paraDecls ::= ( decl,* ) | [ decl,* ]
+    // TODO check commas
     paraDecls: ($) =>
       choice(seq("(", repeat($.decl), ")"), seq("[", repeat($.decl), "]")),
 
+    // assertDecl ::= assert [name] block
     assertDecl: ($) => seq("assert", optional($.name), $.block),
 
+    // cmdDecl ::= [name :] ( run | check ) ( qualName | block ) [scope]
     cmdDecl: ($) =>
       seq(
         optional(seq($.name, ":")),
@@ -94,14 +110,25 @@ module.exports = grammar({
         optional($.scope),
       ),
 
-    // ... continue with the rest of your rules ...
-    // ... continued from previous rules ...
-
+    // scope ::= for number [but typescope,+] | for typescope,+
+    // TODO check commas
     scope: ($) =>
       seq("for", choice($.number, seq("but", repeat1($.typescope)))),
 
+    // typescope ::= [exactly] number qualName
     typescope: ($) => seq(optional("exactly"), $.number, $.qualName),
 
+    // expr ::= const | qualName | @name | this
+    //     | unOp expr | expr binOp expr | expr arrowOp expr
+    //     | expr [ expr,* ]
+    //     | expr [! | not] compareOp expr
+    //     | expr ( => | implies ) expr else expr
+    //     | let letDecl,+ blockOrBar
+    //     | quant decl,+ blockOrBar
+    //     | { decl,+ blockOrBar }
+    //     | expr '
+    //     | ( expr ) | block
+    // TODO check commas
     expr: ($) =>
       choice(
         $.const,
@@ -122,8 +149,11 @@ module.exports = grammar({
         $.block,
       ),
 
+    // const ::= [-] number | none | univ | iden
     const: ($) => seq(optional("-"), choice($.number, "none", "univ", "iden")),
 
+    // unOp ::= ! | not | no | mult | set | # | ~ | * | ^
+    //     | always | eventually | after | before | historically | once
     unOp: ($) =>
       choice(
         "!",
@@ -143,6 +173,8 @@ module.exports = grammar({
         "once",
       ),
 
+    // binOp ::= || | or | && | and | <=> | iff | => | implies |
+    //     & | + | - | ++ | <: | :> | . | until | releases | since | triggered | ;
     binOp: ($) =>
       choice(
         "||",
@@ -167,6 +199,7 @@ module.exports = grammar({
         ";",
       ),
 
+    // arrowOp ::= [mult | set] -> [mult | set]
     arrowOp: ($) =>
       seq(
         optional(choice($.mult, "set")),
@@ -174,18 +207,25 @@ module.exports = grammar({
         optional(choice($.mult, "set")),
       ),
 
+    // compareOp ::= in | = | < | > | =< | >=
     compareOp: ($) => choice("in", "=", "<", ">", "=<", ">="),
 
+    // letDecl ::= name = expr
     letDecl: ($) => seq($.name, "=", $.expr),
 
+    // block ::= { expr* }
     block: ($) => seq("{", repeat($.expr), "}"),
 
+    // blockOrBar ::= block | bar expr
     blockOrBar: ($) => choice($.block, seq($.bar, $.expr)),
 
+    // bar ::= |
     bar: ($) => "|",
 
+    // quant ::= all | no | sum | mult
     quant: ($) => choice("all", "no", "sum", $.mult),
 
+    // qualName ::= [this/] ( name / )* name
     qualName: ($) =>
       seq(optional(seq("this/", repeat(seq($.name, "/")))), $.name),
   },
