@@ -228,5 +228,9 @@ module.exports = grammar({
     // qualName ::= [this/] ( name / )* name
     qualName: ($) =>
       seq(optional(seq("this/", repeat(seq($.name, "/")))), $.name),
+
+    name: (_$) => /[A-Za-z_"]+/,
+
+    number: (_$) => /\d+/,
   },
 });
