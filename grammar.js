@@ -5,6 +5,8 @@ const commaSepBy = (i) => optional(commaSepBy1(i));
 module.exports = grammar({
   name: "alloy",
 
+  word: ($) => $.name,
+
   rules: {
     // alloyModule ::= [moduleDecl] import* paragraph*
     alloyModule: ($) =>
