@@ -87,7 +87,7 @@ module.exports = grammar({
         $.predDecl,
         $.funDecl,
         $.assertDecl,
-        $.cmdDecl,
+        // $.cmdDecl,
       ),
 
     // sigDecl ::= [var] [abstract] [mult] sig name,+ [sigExt] { fieldDecl,* } [block]
@@ -161,26 +161,26 @@ module.exports = grammar({
     assertDecl: ($) => seq("assert", optional($.name), $.block),
 
     // cmdDecl ::= [name :] ( run | check ) ( qualName | block ) [scope]
-    cmdDecl: ($) =>
-      seq(
-        optional(seq($.name, ":")),
-        choice("run", "check"),
-        choice($.qualName, $.block),
-        optional($.scope),
-      ),
+    // cmdDecl: ($) =>
+    //   seq(
+    //     optional(seq($.name, ":")),
+    //     choice("run", "check"),
+    //     choice($.qualName, $.block),
+    //     optional($.scope),
+    //   ),
 
     // scope ::= for number [but typescope,+] | for typescope,+
-    scope: ($) =>
-      seq(
-        "for",
-        choice(
-          seq($.number, optional(seq("but", commaSepBy1($.typescope)))),
-          commaSepBy1($.typescope),
-        ),
-      ),
+    // scope: ($) =>
+    //   seq(
+    //     "for",
+    //     choice(
+    //       seq($.number, optional(seq("but", commaSepBy1($.typescope)))),
+    //       commaSepBy1($.typescope),
+    //     ),
+    //   ),
 
     // typescope ::= [exactly] number qualName
-    typescope: ($) => seq(optional("exactly"), $.number, $.qualName),
+    // typescope: ($) => seq(optional("exactly"), $.number, $.qualName),
 
     // expr ::= const | qualName | @name | this
     //     | unOp expr | expr binOp expr | expr arrowOp expr
@@ -199,29 +199,29 @@ module.exports = grammar({
         seq("@", $.name),
         "this",
         seq($.unOp, $.expr),
-        seq($.expr, $.binOp, $.expr),
-        seq($.expr, $.arrowOp, $.expr),
-        seq($.expr, "[", prec("box_join", commaSepBy($.expr)), "]"),
+        // seq($.expr, $.binOp, $.expr),
+        // seq($.expr, $.arrowOp, $.expr),
+        // seq($.expr, "[", prec("box_join", commaSepBy($.expr)), "]"),
 
-        seq(
-          $.expr,
-          prec(
-            "comparison_operators",
-            seq(
-              prec("comparison_negation_operators", choice("!", "not")),
-              $.compareOp,
-            ),
-          ),
-          $.expr,
-        ),
+        // seq(
+        //   $.expr,
+        //   prec(
+        //     "comparison_operators",
+        //     seq(
+        //       prec("comparison_negation_operators", choice("!", "not")),
+        //       $.compareOp,
+        //     ),
+        //   ),
+        //   $.expr,
+        // ),
 
-        seq(
-          $.expr,
-          prec.right("implication", choice("=>", "implies")),
-          $.expr,
-          prec.right("implication", "else"),
-          $.expr,
-        ),
+        // seq(
+        //   $.expr,
+        //   prec.right("implication", choice("=>", "implies")),
+        //   $.expr,
+        //   prec.right("implication", "else"),
+        //   $.expr,
+        // ),
         seq(
           "let",
           prec("let_and_quantification_operators", commaSepBy1($.letDecl)),
@@ -233,7 +233,7 @@ module.exports = grammar({
           $.blockOrBar,
         ),
         seq("{", commaSepBy1($.decl), $.blockOrBar, "}"),
-        seq($.expr, prec("prime", "'")),
+        // seq($.expr, prec("prime", "'")),
         seq("(", $.expr, ")"),
         $.block,
       ),
