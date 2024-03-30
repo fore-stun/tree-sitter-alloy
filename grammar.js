@@ -8,8 +8,9 @@ module.exports = grammar({
   word: ($) => $.name,
 
   precedences: () => [
-    // Expression operators bind most tightly, in the following precedence order, tightest first:
     [
+      // Expression operators bind most tightly, in the following precedence order, tightest first:
+
       // unary operators: ~, ^ and *;
       "unary_operators",
       // prime: ';
@@ -37,9 +38,9 @@ module.exports = grammar({
       "comparison_negation_operators",
       // comparison operators: in, =, <, >, = [sic], =<, >=.
       "comparison_operators",
-    ],
-    // Logical operators are bound at lower precedence, as follows:
-    [
+
+      // Logical operators are bound at lower precedence, as follows:
+
       // unary operators: ! and not, always, eventually, after, before, historically and once;
       "unary_logical_operators",
       // binary temporal connectives: until, releases, since, triggered;
