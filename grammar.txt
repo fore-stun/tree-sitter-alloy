@@ -1,0 +1,41 @@
+alloyModule ::= [moduleDecl] import* paragraph*
+moduleDecl ::= module qualName [[name,+]]
+import ::= open qualName [[qualName,+]] [as name]
+paragraph ::= sigDecl | factDecl | predDecl | funDecl
+    | assertDecl | cmdDecl
+sigDecl ::= [var] [abstract] [mult] sig name,+ [sigExt] { fieldDecl,* } [block]
+sigExt ::= extends qualName | in qualName [+ qualName]*
+mult ::= lone | some | one
+fieldDecl ::= [var] decl
+decl ::= [disj] name,+ : [disj] expr
+factDecl ::= fact [name] block
+predDecl ::= pred [qualName .] name [paraDecls] block
+funDecl ::= fun [qualName .] name [paraDecls] : expr { expr }
+paraDecls ::= ( decl,* ) | [ decl,* ]
+assertDecl ::= assert [name] block
+cmdDecl ::= [name :] ( run | check ) ( qualName | block ) [scope]
+scope ::= for number [but typescope,+] | for typescope,+
+typescope ::= [exactly] number qualName
+expr ::= const | qualName | @name | this
+    | unOp expr | expr binOp expr | expr arrowOp expr
+    | expr [ expr,* ]
+    | expr [! | not] compareOp expr
+    | expr ( => | implies ) expr else expr
+    | let letDecl,+ blockOrBar
+    | quant decl,+ blockOrBar
+    | { decl,+ blockOrBar }
+    | expr '
+    | ( expr ) | block
+const ::= [-] number | none | univ | iden
+unOp ::= ! | not | no | mult | set | # | ~ | * | ^ 
+    | always | eventually | after | before | historically | once
+binOp ::= || | or | && | and | <=> | iff | => | implies | 
+    & | + | - | ++ | <: | :> | . | until | releases | since | triggered | ;
+arrowOp ::= [mult | set] -> [mult | set]
+compareOp ::= in | = | < | > | =< | >=
+letDecl ::= name = expr
+block ::= { expr* }
+blockOrBar ::= block | bar expr
+bar ::= |
+quant ::= all | no | sum | mult
+qualName ::= [this/] ( name / )* name

@@ -1,0 +1,244 @@
+====
+open
+====
+
+open util/ordering
+
+---
+
+(alloyModule
+  (import
+    module: (qualName
+      prefix: (name)
+      name: (name))))
+
+=====
+open2
+=====
+
+open util/ordering[Trace]
+
+---
+
+(alloyModule
+  (import
+    module: (qualName
+      prefix: (name)
+      name: (name))
+    args: (qualName
+      name: (name))))
+
+===
+fun
+===
+
+fun transitions : State -> Event -> State {
+    On  -> C -> Off 
+  + Off -> C -> On
+}
+
+---
+
+(alloyModule
+  (paragraph
+    (funDecl
+      name: (name)
+      (expr
+        (qualName
+          name: (name)))
+      (ERROR
+        (name)
+        (name))
+      (ERROR
+        (name)
+        (name)
+        (name)
+        (name)
+        (name))
+      (expr
+        (qualName
+          name: (name))))))
+
+===
+sig
+===
+
+sig Trace {
+  state : State,
+  event : lone Event
+}
+
+---
+
+(alloyModule
+  (paragraph
+    (sigDecl
+      names: (name)
+      fields: (fieldDecl
+        (decl
+          name: (name)
+          expression: (expr
+            (qualName
+              name: (name)))))
+      fields: (fieldDecl
+        (decl
+          name: (name)
+          expression: (expr
+            (unOp
+              (unExpQuantMult
+                (mult)))
+            (expr
+              (qualName
+                name: (name)))))))))
+
+====
+fact
+====
+
+fact {
+  first.state = On
+  no last.event
+
+  all t : Trace - last, t" : t.next {
+    some e : Event {
+      t.event = e 
+      t".state = transitions[t.state][t.event]
+    }
+  }
+}
+
+---
+
+(alloyModule
+  (paragraph
+    (factDecl
+      (block
+        (expr
+          (qualName
+            name: (name)))
+        (ERROR)
+        (expr
+          (qualName
+            name: (name)))
+        (ERROR)
+        (expr
+          (qualName
+            name: (name)))
+        (expr
+          (unOp
+            (unExpQuantMult))
+          (expr
+            (qualName
+              name: (name))))
+        (ERROR)
+        (expr
+          (qualName
+            name: (name)))
+        (expr
+          (quant)
+          (decl
+            name: (name)
+            expression: (expr
+              (qualName
+                name: (name))))
+          (ERROR
+            (name))
+          (decl
+            name: (name)
+            (ERROR
+              (name))
+            expression: (expr
+              (qualName
+                name: (name))))
+          (blockOrBar
+            (block
+              (expr
+                (unOp
+                  (unExpQuantMult
+                    (mult)))
+                (expr
+                  (qualName
+                    name: (name))))
+              (ERROR)
+              (expr
+                (qualName
+                  name: (name)))
+              (expr
+                (block
+                  (expr
+                    (qualName
+                      name: (name)))
+                  (ERROR)
+                  (expr
+                    (qualName
+                      name: (name)))
+                  (ERROR)
+                  (expr
+                    (qualName
+                      name: (name)))
+                  (expr
+                    (qualName
+                      name: (name)))
+                  (ERROR)
+                  (expr
+                    (qualName
+                      name: (name)))
+                  (ERROR)
+                  (expr
+                    (qualName
+                      name: (name)))
+                  (ERROR)
+                  (expr
+                    (qualName
+                      name: (name)))
+                  (ERROR)
+                  (expr
+                    (qualName
+                      name: (name)))
+                  (ERROR)
+                  (expr
+                    (qualName
+                      name: (name)))
+                  (ERROR)
+                  (expr
+                    (qualName
+                      name: (name)))
+                  (ERROR))))))))))
+
+====
+pred
+====
+
+pred show( t : set Trace ) { }
+
+---
+
+(alloyModule
+  (paragraph
+    (predDecl
+      name: (name)
+      (paraDecls
+        (decl
+          name: (name)
+          expression: (expr
+            (unOp
+              (unExpQuantMult))
+            (expr
+              (qualName
+                name: (name))))))
+      predicates: (block))))
+
+===
+run
+===
+
+run show  for 10
+
+---
+
+(alloyModule
+  (ERROR
+    (name)
+    (name)
+    (name)
+    (number)))
