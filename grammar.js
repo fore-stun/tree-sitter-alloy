@@ -7,7 +7,7 @@ module.exports = grammar({
 
   word: ($) => $.name,
 
-  precedences: [
+  precedences: () => [
     // Expression operators bind most tightly, in the following precedence order, tightest first:
     [
       // unary operators: ~, ^ and *;
@@ -196,16 +196,41 @@ module.exports = grammar({
         $.qualName,
         seq("@", $.name),
         "this",
+        // "unary_operators" // ~ ^ *
+        // "cardinality" // #
+        // "expression_quantifiers_and_multiplicities" // no mult (some lone one) set
+        //
+        // "unary_logical_operators" // ! not always eventually after before historically once
         seq($.unOp, $.expr),
+        // "dot_join" // .
+        // "restriction_operators" // <: :>
+        // "intersection" // &
+        // "override" // ++
+        // "union_and_difference" // + -
+        //
+        // "binary_temporal_connectives" // until releases since triggered
+        // "conjunction" && and
+        // "implication" => implies else
+        // "bi_implication" <=> iff
+        // "disjunction" || or
+        // "sequence_of_states" ;
         seq($.expr, $.binOp, $.expr),
-        seq($.expr, $.arrowOp, $.expr),
-        seq($.expr, "[", commaSepBy($.expr), "]"),
+        prec("arrow_product", seq($.expr, $.arrowOp, $.expr)),
+        prec("box_join", seq($.expr, "[", commaSepBy($.expr), "]")),
+        // "comparison_negation_operators" // ! not [defined here!]
+        // "comparison_operators" // in = < > =< >=
         seq($.expr, choice("!", "not"), $.compareOp, $.expr),
         seq($.expr, choice("=>", "implies"), $.expr, "else", $.expr),
-        seq("let", commaSepBy1($.letDecl), $.blockOrBar),
-        seq($.quant, commaSepBy1($.decl), $.blockOrBar),
+        prec(
+          "let_and_quantification_operators",
+          seq("let", commaSepBy1($.letDecl), $.blockOrBar),
+        ),
+        prec(
+          "let_and_quantification_operators",
+          seq($.quant, commaSepBy1($.decl), $.blockOrBar),
+        ),
         seq("{", commaSepBy1($.decl), $.blockOrBar, "}"),
-        seq($.expr, "'"),
+        prec("prime", seq($.expr, "'")),
         seq("(", $.expr, ")"),
         $.block,
       ),
