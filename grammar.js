@@ -7,6 +7,35 @@ module.exports = grammar({
 
   word: ($) => $.name,
 
+  // Expression operators bind most tightly, in the following precedence order, tightest first:
+  //
+  // -   unary operators: ~, ^ and *;
+  // -   prime: ';
+  // -   dot join: . ;
+  // -   box join: [];
+  // -   restriction operators: <: and :>;
+  // -   arrow product: ->;
+  // -   intersection: &;
+  // -   override: ++;
+  // -   cardinality: #;
+  // -   union and difference: + and -;
+  // -   expression quantifiers and multiplicities: no, some, lone, one, set;
+  // -   comparison negation operators: ! and not;
+  // -   comparison operators: in, =, <, >, =, =<, >=.
+  // -   Note, in particular, that dot join binds more tightly than box join, so a.b[c] is parsed as (a.b)[c].
+  //
+  // Logical operators are bound at lower precedence, as follows:
+  //
+  // -   unary operators: ! and not, always, eventually, after, before, historically and once;
+  // -   binary temporal connectives: until, releases, since, triggered;
+  // -   conjunction: && and and;
+  // -   implication: =>, implies, and else;
+  // -   bi-implication: <=>, iff;
+  // -   disjunction: || and or;
+  // -   let and quantification operators: let, no, some, lone, one and sum;
+  // -   sequence (of states): ;.
+  precedences: [ ],
+
   rules: {
     // alloyModule ::= [moduleDecl] import* paragraph*
     alloyModule: ($) =>
