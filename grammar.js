@@ -196,31 +196,60 @@ module.exports = grammar({
         $.qualName,
         seq("@", $.name),
         "this",
-        // "unary_operators" // ~ ^ *
-        // "cardinality" // #
-        // "expression_quantifiers_and_multiplicities" // no mult (some lone one) set
-        //
-        // "unary_logical_operators" // ! not always eventually after before historically once
-        seq($.unOp, $.expr),
-        // "dot_join" // .
-        // "restriction_operators" // <: :>
-        // "intersection" // &
-        // "override" // ++
-        // "union_and_difference" // + -
-        //
-        // "binary_temporal_connectives" // until releases since triggered
-        // "conjunction" && and
-        // "implication" => implies else
-        // "bi_implication" <=> iff
-        // "disjunction" || or
-        // "sequence_of_states" ;
+
+        // Unary operators (unOp)
+        prec("unary_operators", seq($.unExpOp, $.expr)),
+        prec("cardinality", seq($.unCardinality, $.expr)),
+        prec(
+          "expression_quantifiers_and_multiplicities",
+          seq($.unExpQuantMult, $.expr),
+        ),
+        prec("unary_logical_operators", seq($.unLogicalOp, $.expr)),
+
+        // Binary operators
         seq($.expr, $.binOp, $.expr),
-        prec("arrow_product", seq($.expr, $.arrowOp, $.expr)),
+        prec.left("dot_join", seq($.expr, $.binDotJoin, $.expr)),
+        prec.left(
+          "restriction_operators",
+          seq($.expr, $.binRestriction, $.expr),
+        ),
+        prec.left("intersection", seq($.expr, $.binIntersection, $.expr)),
+        prec.left("override", seq($.expr, $.binOverride, $.expr)),
+        prec.left("union_and_difference", seq($.expr, $.binUnionDiff, $.expr)),
+        prec(
+          "binary_temporal_connectives",
+          seq($.expr, $.binBinTempConn, $.expr),
+        ),
+        prec.left("conjunction", seq($.expr, $.binConjunction, $.expr)),
+        // The binary operation applies when both exprs are booleans
+        prec.right("implication", seq($.expr, $.binImplication, $.expr)),
+        // The ternary operation is required, otherwise
+        prec.right(
+          "implication",
+          seq($.expr, choice("=>", "implies"), $.expr, "else", $.expr),
+        ),
+        prec.left("bi_implication", seq($.expr, $.binBiImplication, $.expr)),
+        prec.left("disjunction", seq($.expr, $.binDisjunction, $.expr)),
+        prec.right(
+          "sequence_of_states",
+          seq($.expr, $.binSequenceStates, $.expr),
+        ),
+
+        prec.left("arrow_product", seq($.expr, $.arrowOp, $.expr)),
         prec("box_join", seq($.expr, "[", commaSepBy($.expr), "]")),
-        // "comparison_negation_operators" // ! not [defined here!]
-        // "comparison_operators" // in = < > =< >=
-        seq($.expr, choice("!", "not"), $.compareOp, $.expr),
-        seq($.expr, choice("=>", "implies"), $.expr, "else", $.expr),
+
+        prec(
+          "comparison_operators",
+          seq(
+            $.expr,
+            prec(
+              "comparison_negation_operators",
+              seq(choice("!", "not"), $.compareOp),
+            ),
+            $.expr,
+          ),
+        ),
+
         prec(
           "let_and_quantification_operators",
           seq("let", commaSepBy1($.letDecl), $.blockOrBar),
@@ -241,16 +270,19 @@ module.exports = grammar({
     // unOp ::= ! | not | no | mult | set | # | ~ | * | ^
     //     | always | eventually | after | before | historically | once
     unOp: ($) =>
+      choice($.unExpOp, $.unExpQuantMult, $.unCardinality, $.unLogicalOp),
+
+    // "unary_operators"
+    unExpOp: (_$) => choice("~", "*", "^"),
+    // "cardinality"
+    unCardinality: (_$) => "#",
+    // "expression_quantifiers_and_multiplicities"
+    unExpQuantMult: ($) => choice("no", $.mult, "set"),
+    // "unary_logical_operators"
+    unLogicalOp: (_$) =>
       choice(
         "!",
         "not",
-        "no",
-        $.mult,
-        "set",
-        "#",
-        "~",
-        "*",
-        "^",
         "always",
         "eventually",
         "after",
@@ -261,29 +293,46 @@ module.exports = grammar({
 
     // binOp ::= || | or | && | and | <=> | iff | => | implies |
     //     & | + | - | ++ | <: | :> | . | until | releases | since | triggered | ;
-    binOp: (_$) =>
+    binOp: ($) =>
       choice(
-        "||",
-        "or",
-        "&&",
-        "and",
-        "<=>",
-        "iff",
-        "=>",
-        "implies",
-        "&",
-        "+",
-        "-",
-        "++",
-        "<:",
-        ":>",
-        ".",
-        "until",
-        "releases",
-        "since",
-        "triggered",
-        ";",
+        $.binDotJoin,
+        $.binRestriction,
+        $.binIntersection,
+        $.binOverride,
+        $.binUnionDiff,
+        $.binBinTempConn,
+        $.binConjunction,
+        $.binImplication,
+        $.binBiImplication,
+        $.binDisjunction,
+        $.binSequenceStates,
       ),
+
+    // Expression
+    // "dot_join"
+    binDotJoin: (_$) => ".",
+    // "restriction_operators"
+    binRestriction: (_$) => choice("<:", ":>"),
+    // "intersection"
+    binIntersection: (_$) => "&",
+    // "override"
+    binOverride: (_$) => "++",
+    // "union_and_difference"
+    binUnionDiff: (_$) => choice("+", "-"),
+
+    // Logical
+    // "binary_temporal_connectives"
+    binBinTempConn: (_$) => choice("until", "releases", "since", "triggered"),
+    // "conjunction"
+    binConjunction: (_$) => choice("&&", "and"),
+    // "implication"
+    binImplication: (_$) => choice("=>", "implies"),
+    // "bi_implication"
+    binBiImplication: (_$) => choice("<=>", "iff"),
+    // "disjunction"
+    binDisjunction: (_$) => choice("||", "or"),
+    // "sequence_of_states"
+    binSequenceStates: (_$) => ";",
 
     // arrowOp ::= [mult | set] -> [mult | set]
     arrowOp: ($) =>
