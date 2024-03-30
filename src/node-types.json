@@ -1,11 +1,989 @@
 [
   {
-    "type": "source_file",
+    "type": "alloyModule",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "import",
+          "named": true
+        },
+        {
+          "type": "moduleDecl",
+          "named": true
+        },
+        {
+          "type": "paragraph",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "assertDecl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "binBiImplication",
     "named": true,
     "fields": {}
   },
   {
-    "type": "hello",
+    "type": "binBinTempConn",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "binConjunction",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "binDisjunction",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "binDotJoin",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "binImplication",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "binIntersection",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "binOverride",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "binRestriction",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "binSequenceStates",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "binUnionDiff",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "blockOrBar",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "bar",
+          "named": true
+        },
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "const",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "number",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "decl",
+    "named": true,
+    "fields": {
+      "expression": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "expr",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "expr",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "blockOrBar",
+          "named": true
+        },
+        {
+          "type": "const",
+          "named": true
+        },
+        {
+          "type": "decl",
+          "named": true
+        },
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "letDecl",
+          "named": true
+        },
+        {
+          "type": "name",
+          "named": true
+        },
+        {
+          "type": "qualName",
+          "named": true
+        },
+        {
+          "type": "quant",
+          "named": true
+        },
+        {
+          "type": "unOp",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "factDecl",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "fieldDecl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "decl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "funDecl",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ".",
+            "named": false
+          },
+          {
+            "type": "name",
+            "named": true
+          },
+          {
+            "type": "qualName",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "paraDecls",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "import",
+    "named": true,
+    "fields": {
+      "alias": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "as",
+            "named": false
+          },
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "args": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "[",
+            "named": false
+          },
+          {
+            "type": "]",
+            "named": false
+          },
+          {
+            "type": "qualName",
+            "named": true
+          }
+        ]
+      },
+      "module": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "qualName",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "letDecl",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "expr",
+          "named": true
+        },
+        {
+          "type": "name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "moduleDecl",
+    "named": true,
+    "fields": {
+      "args": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "module": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "qualName",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "mult",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "paraDecls",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "decl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "paragraph",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "assertDecl",
+          "named": true
+        },
+        {
+          "type": "factDecl",
+          "named": true
+        },
+        {
+          "type": "funDecl",
+          "named": true
+        },
+        {
+          "type": "predDecl",
+          "named": true
+        },
+        {
+          "type": "sigDecl",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "predDecl",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ".",
+            "named": false
+          },
+          {
+            "type": "name",
+            "named": true
+          },
+          {
+            "type": "qualName",
+            "named": true
+          }
+        ]
+      },
+      "predicates": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "block",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "paraDecls",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "qualName",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      },
+      "prefix": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "/",
+            "named": false
+          },
+          {
+            "type": "name",
+            "named": true
+          },
+          {
+            "type": "this/",
+            "named": false
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "quant",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "mult",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "sigDecl",
+    "named": true,
+    "fields": {
+      "fields": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "fieldDecl",
+            "named": true
+          }
+        ]
+      },
+      "names": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": ",",
+            "named": false
+          },
+          {
+            "type": "name",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "block",
+          "named": true
+        },
+        {
+          "type": "mult",
+          "named": true
+        },
+        {
+          "type": "sigExt",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "sigExt",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "qualName",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "unCardinality",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "unExpOp",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "unExpQuantMult",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "mult",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "unLogicalOp",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "unOp",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "unCardinality",
+          "named": true
+        },
+        {
+          "type": "unExpOp",
+          "named": true
+        },
+        {
+          "type": "unExpQuantMult",
+          "named": true
+        },
+        {
+          "type": "unLogicalOp",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "!",
+    "named": false
+  },
+  {
+    "type": "#",
+    "named": false
+  },
+  {
+    "type": "&",
+    "named": false
+  },
+  {
+    "type": "&&",
+    "named": false
+  },
+  {
+    "type": "(",
+    "named": false
+  },
+  {
+    "type": ")",
+    "named": false
+  },
+  {
+    "type": "*",
+    "named": false
+  },
+  {
+    "type": "+",
+    "named": false
+  },
+  {
+    "type": "++",
+    "named": false
+  },
+  {
+    "type": ",",
+    "named": false
+  },
+  {
+    "type": "-",
+    "named": false
+  },
+  {
+    "type": "->",
+    "named": false
+  },
+  {
+    "type": ".",
+    "named": false
+  },
+  {
+    "type": "/",
+    "named": false
+  },
+  {
+    "type": ":",
+    "named": false
+  },
+  {
+    "type": ":>",
+    "named": false
+  },
+  {
+    "type": ";",
+    "named": false
+  },
+  {
+    "type": "<",
+    "named": false
+  },
+  {
+    "type": "<:",
+    "named": false
+  },
+  {
+    "type": "<=>",
+    "named": false
+  },
+  {
+    "type": "=",
+    "named": false
+  },
+  {
+    "type": "=<",
+    "named": false
+  },
+  {
+    "type": "=>",
+    "named": false
+  },
+  {
+    "type": ">",
+    "named": false
+  },
+  {
+    "type": ">=",
+    "named": false
+  },
+  {
+    "type": "@",
+    "named": false
+  },
+  {
+    "type": "[",
+    "named": false
+  },
+  {
+    "type": "]",
+    "named": false
+  },
+  {
+    "type": "^",
+    "named": false
+  },
+  {
+    "type": "abstract",
+    "named": false
+  },
+  {
+    "type": "after",
+    "named": false
+  },
+  {
+    "type": "all",
+    "named": false
+  },
+  {
+    "type": "always",
+    "named": false
+  },
+  {
+    "type": "and",
+    "named": false
+  },
+  {
+    "type": "as",
+    "named": false
+  },
+  {
+    "type": "assert",
+    "named": false
+  },
+  {
+    "type": "bar",
+    "named": true
+  },
+  {
+    "type": "before",
+    "named": false
+  },
+  {
+    "type": "disj",
+    "named": false
+  },
+  {
+    "type": "eventually",
+    "named": false
+  },
+  {
+    "type": "extends",
+    "named": false
+  },
+  {
+    "type": "fact",
+    "named": false
+  },
+  {
+    "type": "fun",
+    "named": false
+  },
+  {
+    "type": "historically",
+    "named": false
+  },
+  {
+    "type": "iden",
+    "named": false
+  },
+  {
+    "type": "iff",
+    "named": false
+  },
+  {
+    "type": "implies",
+    "named": false
+  },
+  {
+    "type": "in",
+    "named": false
+  },
+  {
+    "type": "let",
+    "named": false
+  },
+  {
+    "type": "lone",
+    "named": false
+  },
+  {
+    "type": "module",
+    "named": false
+  },
+  {
+    "type": "name",
+    "named": true
+  },
+  {
+    "type": "no",
+    "named": false
+  },
+  {
+    "type": "none",
+    "named": false
+  },
+  {
+    "type": "not",
+    "named": false
+  },
+  {
+    "type": "number",
+    "named": true
+  },
+  {
+    "type": "once",
+    "named": false
+  },
+  {
+    "type": "one",
+    "named": false
+  },
+  {
+    "type": "open",
+    "named": false
+  },
+  {
+    "type": "or",
+    "named": false
+  },
+  {
+    "type": "pred",
+    "named": false
+  },
+  {
+    "type": "releases",
+    "named": false
+  },
+  {
+    "type": "set",
+    "named": false
+  },
+  {
+    "type": "sig",
+    "named": false
+  },
+  {
+    "type": "since",
+    "named": false
+  },
+  {
+    "type": "some",
+    "named": false
+  },
+  {
+    "type": "sum",
+    "named": false
+  },
+  {
+    "type": "this",
+    "named": false
+  },
+  {
+    "type": "this/",
+    "named": false
+  },
+  {
+    "type": "triggered",
+    "named": false
+  },
+  {
+    "type": "univ",
+    "named": false
+  },
+  {
+    "type": "until",
+    "named": false
+  },
+  {
+    "type": "var",
+    "named": false
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "||",
+    "named": false
+  },
+  {
+    "type": "}",
+    "named": false
+  },
+  {
+    "type": "~",
     "named": false
   }
 ]
