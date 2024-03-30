@@ -7,59 +7,54 @@ module.exports = grammar({
 
   word: ($) => $.name,
 
-  // Expression operators bind most tightly, in the following precedence order, tightest first:
-  //
-  // -   unary operators: ~, ^ and *;
-  // -   prime: ';
-  // -   dot join: . ;
-  // -   box join: [];
-  // -   restriction operators: <: and :>;
-  // -   arrow product: ->;
-  // -   intersection: &;
-  // -   override: ++;
-  // -   cardinality: #;
-  // -   union and difference: + and -;
-  // -   expression quantifiers and multiplicities: no, some, lone, one, set;
-  // -   comparison negation operators: ! and not;
-  // -   comparison operators: in, =, <, >, =, =<, >=.
-  // -   Note, in particular, that dot join binds more tightly than box join, so a.b[c] is parsed as (a.b)[c].
-  //
-  // Logical operators are bound at lower precedence, as follows:
-  //
-  // -   unary operators: ! and not, always, eventually, after, before, historically and once;
-  // -   binary temporal connectives: until, releases, since, triggered;
-  // -   conjunction: && and and;
-  // -   implication: =>, implies, and else;
-  // -   bi-implication: <=>, iff;
-  // -   disjunction: || and or;
-  // -   let and quantification operators: let, no, some, lone, one and sum;
-  // -   sequence (of states): ;.
   precedences: [
-    // Expression operators
+    // Expression operators bind most tightly, in the following precedence order, tightest first:
     [
+      // unary operators: ~, ^ and *;
       "unary_operators",
+      // prime: ';
       "prime",
+      // dot join: . ;
       "dot_join",
+      // box join: [];
+      // Note, in particular, that dot join binds more tightly than box join, so a.b[c] is parsed as (a.b)[c].
       "box_join",
+      // restriction operators: <: and :>;
       "restriction_operators",
+      // arrow product: ->;
       "arrow_product",
+      // intersection: &;
       "intersection",
+      // override: ++;
       "override",
+      // cardinality: #;
       "cardinality",
+      // union and difference: + and -;
       "union_and_difference",
+      // expression quantifiers and multiplicities: no, some, lone, one, set;
       "expression_quantifiers_and_multiplicities",
+      // comparison negation operators: ! and not;
       "comparison_negation_operators",
+      // comparison operators: in, =, <, >, =, =<, >=.
       "comparison_operators",
     ],
-    // Logical operators
+    // Logical operators are bound at lower precedence, as follows:
     [
+      // unary operators: ! and not, always, eventually, after, before, historically and once;
       "unary_logical_operators",
+      // binary temporal connectives: until, releases, since, triggered;
       "binary_temporal_connectives",
+      // conjunction: && and and;
       "conjunction",
+      // implication: =>, implies, and else;
       "implication",
+      // bi-implication: <=>, iff;
       "bi_implication",
+      // disjunction: || and or;
       "disjunction",
+      // let and quantification operators: let, no, some, lone, one and sum;
       "let_and_quantification_operators",
+      // sequence (of states): ;.
       "sequence_of_states",
     ],
   ],
