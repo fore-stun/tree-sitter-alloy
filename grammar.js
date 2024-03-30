@@ -34,7 +34,35 @@ module.exports = grammar({
   // -   disjunction: || and or;
   // -   let and quantification operators: let, no, some, lone, one and sum;
   // -   sequence (of states): ;.
-  precedences: [ ],
+  precedences: [
+    // Expression operators
+    [
+      "unary_operators",
+      "prime",
+      "dot_join",
+      "box_join",
+      "restriction_operators",
+      "arrow_product",
+      "intersection",
+      "override",
+      "cardinality",
+      "union_and_difference",
+      "expression_quantifiers_and_multiplicities",
+      "comparison_negation_operators",
+      "comparison_operators",
+    ],
+    // Logical operators
+    [
+      "unary_logical_operators",
+      "binary_temporal_connectives",
+      "conjunction",
+      "implication",
+      "bi_implication",
+      "disjunction",
+      "let_and_quantification_operators",
+      "sequence_of_states",
+    ],
+  ],
 
   rules: {
     // alloyModule ::= [moduleDecl] import* paragraph*
