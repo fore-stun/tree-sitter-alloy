@@ -35,7 +35,7 @@ module.exports = grammar({
       "expression_quantifiers_and_multiplicities",
       // comparison negation operators: ! and not;
       "comparison_negation_operators",
-      // comparison operators: in, =, <, >, =, =<, >=.
+      // comparison operators: in, =, <, >, = [sic], =<, >=.
       "comparison_operators",
     ],
     // Logical operators are bound at lower precedence, as follows:
@@ -52,7 +52,7 @@ module.exports = grammar({
       "bi_implication",
       // disjunction: || and or;
       "disjunction",
-      // let and quantification operators: let, no, some, lone, one and sum;
+      // let and quantification operators: let, no, some, lone, one and sum [all?];
       "let_and_quantification_operators",
       // sequence (of states): ;.
       "sequence_of_states",
