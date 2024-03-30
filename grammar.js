@@ -67,15 +67,19 @@ module.exports = grammar({
 
     // moduleDecl ::= module qualName [[name,+]]
     moduleDecl: ($) =>
-      seq("module", $.qualName, optional(seq("[", commaSepBy1($.name), "]"))),
+      seq(
+        "module",
+        field("module", $.qualName),
+        optional(seq("[", field("args", commaSepBy1($.name)), "]")),
+      ),
 
     // import ::= open qualName [[qualName,+]] [as name]
     import: ($) =>
       seq(
         "open",
-        $.qualName,
-        optional(seq("[", commaSepBy1($.qualName), "]")),
-        optional(seq("as", $.name)),
+        field("module", $.qualName),
+        field("args", optional(seq("[", commaSepBy1($.qualName), "]"))),
+        field("alias", optional(seq("as", $.name))),
       ),
 
     // paragraph ::= sigDecl | factDecl | predDecl | funDecl
@@ -97,10 +101,10 @@ module.exports = grammar({
         optional("abstract"),
         optional($.mult),
         "sig",
-        commaSepBy1($.name),
+        field("names", commaSepBy1($.name)),
         optional($.sigExt),
         "{",
-        commaSepBy($.fieldDecl),
+        field("fields", commaSepBy($.fieldDecl)),
         "}",
         optional($.block),
       ),
@@ -121,27 +125,31 @@ module.exports = grammar({
 
     // decl ::= [disj] name,+ : [disj] expr
     decl: ($) =>
-      seq(optional("disj"), commaSepBy1($.name), ":", optional("disj"), $.expr),
+      seq(
+        optional("disj"),
+        field("name", commaSepBy1($.name)),
+        ":",
+        optional("disj"),
+        field("expression", $.expr),
+      ),
 
     // factDecl ::= fact [name] block
-    factDecl: ($) => seq("fact", optional($.name), $.block),
+    factDecl: ($) => seq("fact", optional(field("name", $.name)), $.block),
 
     // predDecl ::= pred [qualName .] name [paraDecls] block
     predDecl: ($) =>
       seq(
         "pred",
-        optional(seq($.qualName, ".")),
-        $.name,
+        field("name", seq(optional(seq($.qualName, ".")), $.name)),
         optional($.paraDecls),
-        $.block,
+        field("predicates", $.block),
       ),
 
     // funDecl ::= fun [qualName .] name [paraDecls] : expr { expr }
     funDecl: ($) =>
       seq(
         "fun",
-        optional(seq($.qualName, ".")),
-        $.name,
+        field("name", seq(optional(seq($.qualName, ".")), $.name)),
         optional($.paraDecls),
         ":",
         $.expr,
@@ -358,7 +366,11 @@ module.exports = grammar({
       ),
 
     // qualName ::= [this/] ( name / )* name
-    qualName: ($) => seq(optional("this/"), repeat(seq($.name, "/")), $.name),
+    qualName: ($) =>
+      seq(
+        field("prefix", seq(optional("this/"), repeat(seq($.name, "/")))),
+        field("name", $.name),
+      ),
 
     name: (_$) => /[A-Za-z_"]+/,
 
